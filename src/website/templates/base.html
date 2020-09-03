@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{% endblock %} - Contoso Crafts</title>
+    <link
+      rel="icon"
+      href="{{ url_for('static', path='favicon.ico') }}"
+      type="image/icon"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', path='/lib/bootstrap/dist/css/bootstrap.min.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', path='/css/site.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Yellowtail&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Nunito&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <nav
+        class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-navbar border-bottom box-shadow mb-3"
+      >
+        <div class="container">
+          <a class="navbar-brand" href="{{ url_for('home')}}">Contoso Crafts</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target=".navbar-collapse"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div
+            class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse"
+          >
+            <ul class="navbar-nav flex-grow-1">
+              <li class="nav-item">
+                <a
+                  class="nav-link text-dark"
+                  href="{{ url_for('show_privacy_policy') }}"
+                  >Privacy</a
+                >
+              </li>
+            </ul>
+          </div>
+          <a class="navbar-brand fa-lg" href="{{url_for('show_cart')}}">
+            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+          </a>
+        </div>
+      </nav>
+    </header>
+    <div class="container">
+      <main role="main" class="pb-3">{% block content %}{% endblock %}</main>
+    </div>
+
+    <footer class="border-top footer text-muted bg-footer">
+      <div class="container">
+        &copy;
+        <script>
+          document.write(new Date().getFullYear());
+        </script>
+        - Contoso Crafts -
+        <a href="{{ url_for('show_privacy_policy') }}">Privacy</a>
+      </div>
+    </footer>
+    <script src="{{ url_for('static', path='/lib/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', path='/lib/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

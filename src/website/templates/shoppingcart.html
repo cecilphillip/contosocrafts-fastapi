@@ -1,0 +1,46 @@
+{% extends "base.html" %} 
+
+{% block title %}Shopping Cart{% endblock %}
+
+{%block content %}
+<app>
+  <div class="card">
+    <div class="card-header">
+      <h5 class="card-title">Shopping Cart</h5>
+    </div>
+    <div class="card-body">
+      <table class="table table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th>Title</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if items %} {% for item in items %}
+          <tr>
+            <td>{{ items[item]['title'] }}</td>
+            <td>{{ items[item]['quantity'] }}</td>
+          </tr>
+          {% endfor %} {% endif %}
+        </tbody>
+      </table>
+    </div>
+    <div class="card-footer text-muted">
+      <button class="btn btn-primary checkoutbtn">Submit</button>
+    </div>
+  </div>
+</app>
+{% endblock %} 
+
+{% block scripts %}
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    let btn = document.querySelector(".checkoutbtn");
+    btn.addEventListener("click", async function (evt) {
+      var resp = await fetch("/checkout", { method: "POST" });
+      location.reload(true);
+    });
+  });
+</script>
+{% endblock %}
