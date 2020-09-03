@@ -1,0 +1,52 @@
+version: "3.7"
+
+services:
+  ##### MongoDB #####
+  mongodb:
+    container_name: mongo_service
+    image: mongo:4.2.9
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGO_INITDB_DATABASE=contosocrafts
+    volumes:
+      - ./productdata/products.json:/data/products.json
+      - ./productdata/populate.sh:/docker-entrypoint-initdb.d/populate.sh
+      - ./contoso_tmp/mongo/data/db:/data/db
+    ports:
+      - "27017:27017"
+
+  ##### Rabbitmq #####
+  rabbitmq:
+    image: "rabbitmq:3.8.7-management"
+    container_name: "rabbitmq_server"
+    hostname: "rabbitmq_server"
+    environment:
+      - RABBITMQ_DEFAULT_USER=demo
+      - RABBITMQ_DEFAULT_PASS=demo
+      - RABBITMQ_ERLANG_COOKIE=demo_cookie_1234
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+  ##### Redis #####
+  redis:
+    container_name: "redis_service"
+    image: "redis:6.0.6-alpine"
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf 
+
+  ##### Zipkin #####
+  zipkin:
+    container_name: "zipkin_service"
+    image: "openzipkin/zipkin:2.21.5"
+    ports:
+      - 9411:9411
+
+networks:
+  default:
+    name: dapr_py_network
+    driver: bridge

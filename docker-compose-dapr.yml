@@ -1,0 +1,120 @@
+version: "3.7"
+
+services:
+  ##### Website & DAPR Sidecar #####
+  website:
+    build:
+      context: ./src/website
+      dockerfile: Dockerfile
+    container_name: contoso_website
+    env_file:
+      - .env
+    ports:
+      - "80:8000"
+
+  website_dapr:
+    image: "daprio/daprd:0.10.0"
+    command:
+      [
+        "./daprd",
+        "-app-id",
+        "website",
+        "-app-port",
+        "8000",
+        "-placement-address",
+        "placement:6000",
+        "-config",
+        "/dapr/config.yaml",
+        "-components-path",
+        "/dapr/components",
+      ]
+    volumes:
+      - "./components/local:/dapr/components"
+      - "./components/config.yaml:/dapr/config.yaml"
+    depends_on:
+      - website
+      - placement
+    network_mode: "service:website"
+    env_file:
+      - .env
+
+  ##### API & DAPR Sidecar #####
+  productsapi:
+    build:
+      context: ./src/productsapi
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+
+  productsapi_dapr:
+    image: "daprio/daprd:0.10.0"
+    command:
+      [
+        "./daprd",
+        "-app-id",
+        "productsapi",
+        "-app-port",
+        "8000",
+        "-placement-address",
+        "placement:6000",
+        "-config",
+        "/dapr/config.yaml",
+        "-components-path",
+        "/dapr/components",
+      ]
+    volumes:
+      - "./components/local:/dapr/components"
+      - "./components/config.yaml:/dapr/config.yaml"
+    depends_on:
+      - productsapi
+      - placement
+    network_mode: "service:productsapi"
+    env_file:
+      - .env
+
+  ##### Checkout Processor & DAPR Sidecar #####
+  checkoutprocessor:
+    build:
+      context: ./src/messageprocessor
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+
+  checkoutprocessor_dapr:
+    image: "daprio/daprd:0.10.0"
+    command:
+      [
+        "./daprd",
+        "-app-id",
+        "checkoutprocessor",
+        "-app-port",
+        "8000",
+        "-placement-address",
+        "placement:6000",
+        "-config",
+        "/dapr/config.yaml",
+        "-components-path",
+        "/dapr/components",
+      ]
+    volumes:
+      - "./components/local:/dapr/components"
+      - "./components/config.yaml:/dapr/config.yaml"
+    depends_on:
+      - placement
+      - checkoutprocessor
+    env_file:
+      - .env
+    network_mode: "service:checkoutprocessor"
+
+  ##### Dapr Placement #####
+  placement:
+    image: "daprio/placement:0.10.0"
+    container_name: "placement"
+    command: ["./placement", "-port", "6000"]
+    env_file:
+      - .env
+
+networks:
+  default:
+    external:
+      name: dapr_py_network
