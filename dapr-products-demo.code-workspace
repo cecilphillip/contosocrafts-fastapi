@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "src/productsapi"
+		},
+		{
+			"path": "src/website"
+		},
+		{
+			"path": "src/messageprocessor"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {}
+}
