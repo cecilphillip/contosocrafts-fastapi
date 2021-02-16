@@ -4,7 +4,7 @@ This is a python port of https://github.com/cecilphillip/ContosoCrafts/tree/dapr
 
 ## Developing locally
 
-This project is setup to use [Multi-root Workspaces](https://code.visualstudio.com/docs/editor/multi-root-workspaces?WT.mc_id=contosocrafts-github-cephilli) in VS Code. After cloning the repo, launch VS Code and open the `dapr-products-demo.code-workspace` file.
+This project is setup to use [Multi-root Workspaces](https://code.visualstudio.com/docs/editor/multi-root-workspaces?WT.mc_id=academic-0000-cephilli) in VS Code. After cloning the repo, launch VS Code and open the `dapr-products-demo.code-workspace` file.
 
 The [website](src/website), [api](src/productsapi), and [processor](src/messageprocessor) projects each have their own `requirements.txt` files and should be development in seprate virtual environments.
 
